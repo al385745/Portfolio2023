@@ -1,0 +1,12 @@
+# Directories
+First_React_Three_Fiber_Application/node_modules
+webpack/bundler
+webpack/node_modules
+webpack/static
+webpack/dist/fonts
+webpack/dist/textures
+
+# Files
+webpack/readme.md
+webpack/**.json
+*.pack
