@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom/client';
 import { StrictMode } from 'react'
 import * as THREE from 'three'
 import { KeyboardControls } from '@react-three/drei';
-import Experience from './Experience.js'
+import Experience from './Experience/Experience.js'
 
 const root = ReactDOM.createRoot(document.querySelector('#root'));        
 root.render(
