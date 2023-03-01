@@ -1,7 +1,7 @@
-import { useFrame, useThree } from '@react-three/fiber'
-import { useState, useRef, useMemo } from 'react'
+import { useThree } from '@react-three/fiber'
+import { useMemo } from 'react'
 import { useControls } from 'leva'
-import { PerspectiveCamera } from '@react-three/drei';
+import { OrbitControls, PerspectiveCamera } from '@react-three/drei';
 
 export default function Camera()
 {
@@ -39,5 +39,6 @@ export default function Camera()
 
     return <>
         <PerspectiveCamera/>
+        {/* <OrbitControls enableDamping={false}/> */}
     </>
 }

@@ -1,29 +1,52 @@
 import { useGLTF } from '@react-three/drei'
-import { useRef } from 'react';
-import * as THREE from 'three'
+import { useFrame } from '@react-three/fiber';
+import gsap from 'gsap';
+import Globals from './Globals';
 
 export default function Scenery(props) {
 
     const {nodes, materials} = useGLTF("/PortfolioModel.glb");
-    const body = useRef()
+    nodes.Scenario.material.transparent=true
+    var animationDone = false
 
-    nodes.Scenario.material.color = new THREE.Color('lightblue')
+    const insideRoom = Globals((state)=> state.insideRoom)
+
+    // useFrame(()=>
+    // {
+    //     if(insideRoom)
+    //     {
+    //         gsap.to(
+    //             nodes.Scenario.material,
+    //             {
+    //                 duration: 2,
+    //                 opacity: 0,
+    //                 ease: "sine",
+    //             }
+    //         )
+    //     }
+    //     else {
+    //         gsap.to(
+    //             nodes.Scenario.material,
+    //             {
+    //                 duration: 2,
+    //                 opacity: 100,
+    //                 ease: "sine",
+    //             },
+    //             0
+    //         )
+    //     }
+    // })
 
     return (
-        <mesh
-        //   castShadow
-        //   receiveShadow
-            // onClick={ ()=> 
-            //     nodes.Scenario.material.color = new THREE.Color('limegreen')
-            // }
-            ref={body}
-            geometry={nodes.Scenario.geometry}
-            material={nodes.Scenario.material}
-            position={[8, 4, 10]}
-            scale={0.1}
-        />
-
-    );
+        <group>
+            <mesh
+                geometry={nodes.Scenario.geometry}
+                material={nodes.Scenario.material}
+                position={[8, 4, 10]}
+                scale={0.1}
+            />
+        </group>
+    )
 }
 
-useGLTF.preload("/PortfolioModel.glb"); 
+useGLTF.preload("/PortfolioModel.glb");
