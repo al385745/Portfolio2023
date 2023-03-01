@@ -1,7 +1,9 @@
 import { useKeyboardControls, useGLTF } from '@react-three/drei'
 import { useRef, useEffect } from 'react'
+import { useFrame } from '@react-three/fiber'
 import Globals from '../Experience/Globals'
 import gsap from "gsap"
+import { MathUtils } from 'three'
 import * as THREE from 'three'
 
 export default function Model(props) {
@@ -18,18 +20,32 @@ export default function Model(props) {
     const currentDoor = Globals((state)=> state.currentDoor)
     const enabledRoomRotation = Globals((state)=> state.enabledRoomRotation)
     var roomToRotate = null
+    var animationDone = false
     // Methods
     const startRotation = Globals((state)=> state.startRotation)
     
     const forward = useKeyboardControls((state)=> state.forward)
     const backward = useKeyboardControls((state)=> state.forward)
 
-    useEffect(()=>
+    document.querySelector('.point-Rigth').addEventListener("click",(event)=>
     {
-        var direction = -1
-        if (forward)
-            direction = 1
+        if(!animationDone && roomToRotate != null)
+        {
+            animationDone = true
+            gsap.to(roomToRotate.rotation,
+                {   
+                    duration: 3,
+                    y: roomToRotate.rotation.y + MathUtils.degToRad(90),
+                    ease: "sine",
+                    onComplete: ()=>{ 
+                        animationDone = false
+                    }
+                })
+        }
+    })
 
+    useFrame(()=>
+    {
         switch(currentDoor)
         {
             case "door1": roomToRotate = room1.current
@@ -40,22 +56,19 @@ export default function Model(props) {
                 break
             case "door4": roomToRotate = room4.current
                 break
+            case "none": 
+                // if (roomToRotate != null && roomToRotate.rotation.y != 90) 
+                // {
+                //     gsap.to(
+                //         roomToRotate.rotation,
+                //         {
+                //             duration: 2,
+                //             y: 0,
+                //             ease: "sine"
+                //         })
+                // }
         }
-
-        if(enabledRoomRotation && (forward || backward))
-        {
-            gsap.to(
-                roomToRotate.rotation,
-                {   
-                    duration: 2,
-                    y: roomToRotate.rotation.y + Math.PI/2 * direction,
-                    ease: "sine",
-                    onComplete: ()=>{startRotation(true)}
-                }
-            )
-            startRotation(false)
-        }
-    },[forward, backward])
+    })
 
     return (
         <group {...props} /*side={THREE.BackSide}*/ position={[10.6, 2.4, 10]}scale={0.1} dispose={null}>

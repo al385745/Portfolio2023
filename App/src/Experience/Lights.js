@@ -27,7 +27,6 @@ export default function Lights()
 
     return <>
         <Perf position="top-left"/>
-        <color args={ ['#BFD4DB'] } attach="background" /> 
 
         <directionalLight 
             position={[lDir.x, lDir.y, lDir.z]}

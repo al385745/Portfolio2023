@@ -2,7 +2,7 @@ import { useGLTF, useKeyboardControls } from '@react-three/drei'
 import { useEffect, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import Globals from '../Experience/Globals.js'
-import * as THREE from 'three'
+
 import gsap from "gsap"
 
 export default function Doors(props) {
@@ -26,6 +26,7 @@ export default function Doors(props) {
     const doorClicked = Globals((state)=> state.doorClicked)
 
     const exitRoomPressed = useKeyboardControls((state)=> state.escape)
+    var exitUIPressed = false
     
     useFrame((state)=>
     {
@@ -40,8 +41,8 @@ export default function Doors(props) {
                 break
             case "door4": camPosZ = 91
                 break
-            default: doorClicked("none")
-                break
+            // default: doorClicked("none")
+            //     break
         }
         if(currentDoor != "none" && !insideRoom)
         {
@@ -76,36 +77,88 @@ export default function Doors(props) {
             // )
 
             enterRoom(true)
+            document.querySelector('.point-Exit').classList.add('visible')
+            document.querySelector('.point-Exit').addEventListener("click",(event)=>
+            {
+                document.querySelector('.point-Exit').classList.remove('visible')
+                // document.querySelector('.point-Right').style.transform = `translateX(${0}px) translateY(${0}px)`
+                doorClicked("none")
+                exitUIPressed = true
+                exitUIPressed = false
+                startRotation(false)
+                // animationDone = true
+
+                gsap.to(
+                    state.camera.position,
+                    {
+                        x: -5,
+                        y: 6.5,
+                        z: zPos,
+                        duration:2,
+                        ease: "sine",
+                        onComplete: ()=>{
+                            // animationDone = false
+                            enterRoom(false)
+                        }
+                    })
+
+                gsap.to(
+                    state.camera.position,
+                    {
+                        x: -5,
+                        y: 6.5,
+                        z: zPos,
+                        duration:2,
+                        ease: "sine",
+                        onComplete: ()=>{
+                            // animationDone = false
+                            enterRoom(false)
+                        }
+                    })
+
+                gsap.to(
+                    state.camera.rotation,
+                    {
+                        x: 0.5 * Math.PI,
+                        y: 1.3 * Math.PI,
+                        z: 0.5 * Math.PI,
+                        duration:2,
+                        ease: "sine",
+                    })
+            })
+            document.querySelector('.point-Exit').style.transform = `translateX(${0}px) translateY(${300}px)`
         }
-        else if(!animationDone && insideRoom && exitRoomPressed)
+        else if(!animationDone && insideRoom && (exitRoomPressed || exitUIPressed))
         {
-            doorClicked("none")
-            startRotation(false)
-            animationDone = true
+            // document.querySelector('.point-Exit').classList.remove('visible')
+            // document.querySelector('.point-Right').style.transform = `translateX(${0}px) translateY(${0}px)`
+            // exitUIPressed = false
+            // startRotation(false)
+            // animationDone = true
 
-            gsap.to(
-                state.camera.position,
-                {
-                    x: -5,
-                    y: 6.5,
-                    z: zPos,
-                    duration:2,
-                    ease: "sine",
-                    onComplete: ()=>{
-                        animationDone = false
-                        enterRoom(false)
-                    }
-                })
+            // gsap.to(
+            //     state.camera.position,
+            //     {
+            //         x: -5,
+            //         y: 6.5,
+            //         z: zPos,
+            //         duration:2,
+            //         ease: "sine",
+            //         onComplete: ()=>{
+            //             animationDone = false
+            //             enterRoom(false)
+            //         }
+            //     })
 
-            gsap.to(
-                state.camera.rotation,
-                {
-                    x: 0.5 * Math.PI,
-                    y: 1.3 * Math.PI,
-                    z: 0.5 * Math.PI,
-                    duration:2,
-                    ease: "sine",
-                })
+            // gsap.to(
+            //     state.camera.rotation,
+            //     {
+            //         x: 0.5 * Math.PI,
+            //         y: 1.3 * Math.PI,
+            //         z: 0.5 * Math.PI,
+            //         duration:2,
+            //         ease: "sine",
+            //     })
 
             // Show doors again
             // gsap.to(
@@ -124,25 +177,25 @@ export default function Doors(props) {
         <group position={[8, 4, 10]} scale={0.1} {...props} dispose={null} >
             <mesh
                 ref={door1}
-                onPointerDown={()=>{ doorClicked("door1") }}
+                // onPointerDown={()=>{ doorClicked("door1") }}
                 geometry={nodes.Puerta1.geometry}
                 material={nodes.Puerta1.material}
             />
             <mesh
                 ref={door2}
-                onPointerDown={()=>{ doorClicked("door2") }}
+                // onPointerDown={()=>{ doorClicked("door2") }}
                 geometry={nodes.Puerta2.geometry}
                 material={nodes.Puerta2.material}
             />
             <mesh
                 ref={door3}
-                onPointerDown={()=>{ doorClicked("door3") }}
+                // onPointerDown={()=>{ doorClicked("door3") }}
                 geometry={nodes.Puerta3.geometry}
                 material={nodes.Puerta3.material}
             />
             <mesh
                 ref={door4}
-                onPointerDown={()=>{ doorClicked("door4") }}
+                // onPointerDown={()=>{ doorClicked("door4") }}
                 geometry={nodes.Puerta4.geometry}
                 material={nodes.Puerta4.material}
             />
