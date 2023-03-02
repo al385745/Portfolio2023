@@ -42,7 +42,6 @@ export default create(subscribeWithSelector((set)=>
         lastYPos: (value)=> { set(()=> { return {yPos: value }})},
         lastZPos: (value)=> { set(()=> { return {zPos: value }})},
 
-
         // Interface Doors
         door1Clicked: () => { set(()=> { return {currentDoor: "door1" } }) },
         door2Clicked: () => { set(()=> { return {currentDoor: "door2" } }) },

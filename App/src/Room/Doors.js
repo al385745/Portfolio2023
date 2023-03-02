@@ -1,8 +1,8 @@
 import { useGLTF, useKeyboardControls } from '@react-three/drei'
-import { useEffect, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
+import { useRef } from 'react'
 import Globals from '../Experience/Globals.js'
-
+import * as THREE from 'three'
 import gsap from "gsap"
 
 export default function Doors(props) {
@@ -17,17 +17,31 @@ export default function Doors(props) {
 
     const currentDoor = Globals((state)=> state.currentDoor)
     const insideRoom = Globals((state)=> state.insideRoom)
-    const zPos = Globals((state)=> state.zPos)
-    var animationDone = false
     
     // Methods
     const enterRoom = Globals((state)=> state.enterRoom)
     const startRotation = Globals((state)=> state.startRotation)
-    const doorClicked = Globals((state)=> state.doorClicked)
-
+    
     const exitRoomPressed = useKeyboardControls((state)=> state.escape)
     var exitUIPressed = false
+    var animationDone = false
+
+    const pointsDoors = [
+        {   position: new THREE.Vector3(0, 0, 2),
+            element: document.querySelector('.point-0')
+        },
+        {   position: new THREE.Vector3(0, 0, 4),
+            element: document.querySelector('.point-1')
+        },
+        {   position: new THREE.Vector3(0, 0, 6),
+            element: document.querySelector('.point-2')
+        },
+        {   position: new THREE.Vector3(0, 0, 8),
+            element: document.querySelector('.point-3')
+        },]
     
+    document.querySelector('.point-Rotate').style.left = `${90}%`
+
     useFrame((state)=>
     {
         var camPosZ = 0
@@ -44,6 +58,18 @@ export default function Doors(props) {
             // default: doorClicked("none")
             //     break
         }
+
+        // Move points to the 3D environment
+        for(const point of pointsDoors)
+        {
+            const screenPosition = point.position.clone()
+            screenPosition.project(state.camera)
+    
+            const translateX = screenPosition.x * window.innerWidth * 0.5
+            const translateY = screenPosition.y * window.innerHeight * 0.5
+            point.element.style.transform = `translateX(${translateX}px) translateY(${translateY}px)`
+        }
+
         if(currentDoor != "none" && !insideRoom)
         {
             gsap.to(
@@ -66,7 +92,8 @@ export default function Doors(props) {
                     onComplete: ()=>{startRotation(true)}
                 }
             )
-
+            
+            // Hide door
             // gsap.to(
             //     nodes.Puerta1.material,
             //     {
@@ -77,88 +104,17 @@ export default function Doors(props) {
             // )
 
             enterRoom(true)
+            document.querySelector('.point-Right').classList.remove('visible')
+            document.querySelector('.point-Rotate').classList.add('visible')
             document.querySelector('.point-Exit').classList.add('visible')
-            document.querySelector('.point-Exit').addEventListener("click",(event)=>
-            {
-                document.querySelector('.point-Exit').classList.remove('visible')
-                // document.querySelector('.point-Right').style.transform = `translateX(${0}px) translateY(${0}px)`
-                doorClicked("none")
-                exitUIPressed = true
-                exitUIPressed = false
-                startRotation(false)
-                // animationDone = true
-
-                gsap.to(
-                    state.camera.position,
-                    {
-                        x: -5,
-                        y: 6.5,
-                        z: zPos,
-                        duration:2,
-                        ease: "sine",
-                        onComplete: ()=>{
-                            // animationDone = false
-                            enterRoom(false)
-                        }
-                    })
-
-                gsap.to(
-                    state.camera.position,
-                    {
-                        x: -5,
-                        y: 6.5,
-                        z: zPos,
-                        duration:2,
-                        ease: "sine",
-                        onComplete: ()=>{
-                            // animationDone = false
-                            enterRoom(false)
-                        }
-                    })
-
-                gsap.to(
-                    state.camera.rotation,
-                    {
-                        x: 0.5 * Math.PI,
-                        y: 1.3 * Math.PI,
-                        z: 0.5 * Math.PI,
-                        duration:2,
-                        ease: "sine",
-                    })
-            })
-            document.querySelector('.point-Exit').style.transform = `translateX(${0}px) translateY(${300}px)`
+            document.querySelector('.point-Exit').style.top = `${90}%`
         }
-        else if(!animationDone && insideRoom && (exitRoomPressed || exitUIPressed))
-        {
+        // else if(!animationDone && insideRoom && (exitRoomPressed || exitUIPressed))
+        // {
             // document.querySelector('.point-Exit').classList.remove('visible')
-            // document.querySelector('.point-Right').style.transform = `translateX(${0}px) translateY(${0}px)`
             // exitUIPressed = false
             // startRotation(false)
             // animationDone = true
-
-            // gsap.to(
-            //     state.camera.position,
-            //     {
-            //         x: -5,
-            //         y: 6.5,
-            //         z: zPos,
-            //         duration:2,
-            //         ease: "sine",
-            //         onComplete: ()=>{
-            //             animationDone = false
-            //             enterRoom(false)
-            //         }
-            //     })
-
-            // gsap.to(
-            //     state.camera.rotation,
-            //     {
-            //         x: 0.5 * Math.PI,
-            //         y: 1.3 * Math.PI,
-            //         z: 0.5 * Math.PI,
-            //         duration:2,
-            //         ease: "sine",
-            //     })
 
             // Show doors again
             // gsap.to(
@@ -170,32 +126,28 @@ export default function Doors(props) {
             //     },
             //     0
             // )
-        }
+        // }
     })
 
     return (
         <group position={[8, 4, 10]} scale={0.1} {...props} dispose={null} >
             <mesh
                 ref={door1}
-                // onPointerDown={()=>{ doorClicked("door1") }}
                 geometry={nodes.Puerta1.geometry}
                 material={nodes.Puerta1.material}
             />
             <mesh
                 ref={door2}
-                // onPointerDown={()=>{ doorClicked("door2") }}
                 geometry={nodes.Puerta2.geometry}
                 material={nodes.Puerta2.material}
             />
             <mesh
                 ref={door3}
-                // onPointerDown={()=>{ doorClicked("door3") }}
                 geometry={nodes.Puerta3.geometry}
                 material={nodes.Puerta3.material}
             />
             <mesh
                 ref={door4}
-                // onPointerDown={()=>{ doorClicked("door4") }}
                 geometry={nodes.Puerta4.geometry}
                 material={nodes.Puerta4.material}
             />
