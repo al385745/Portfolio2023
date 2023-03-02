@@ -19,12 +19,9 @@ export default function Model(props) {
     // Attributes
     const currentDoor = Globals((state)=> state.currentDoor)
     const insideRoom = Globals((state)=> state.insideRoom)
-    const enabledRoomRotation = Globals((state)=> state.enabledRoomRotation)
-    var canRotate = false
     const zPos = Globals((state)=> state.zPos)
     // Methods
     const doorClicked = Globals((state)=> state.doorClicked)
-    const startRotation = Globals((state)=> state.startRotation)
     const enterRoom = Globals((state)=> state.enterRoom)
 
     const forward = useKeyboardControls((state)=> state.forward)
@@ -56,32 +53,23 @@ export default function Model(props) {
         document.querySelector('.point-Rotate').classList.remove('visible')
         doorClicked("none")
 
-        // startRotation(false)
-        // exitUIPressed = true
-
         if(cameraRef != null)
         {
             gsap.to(cameraRef.position, 
                 {
                     x: -5, y: 6.5, z: zPos,
-                    duration:2, ease: "sine",
+                    duration: 2, ease: "power2.out",
                     onComplete:()=>{
                         document.querySelector('.point-Right').classList.add('visible')
                         enterRoom(false)
                     }
                 })
     
-            gsap.to(cameraRef.position,
-                {
-                    x: -5, y: 6.5, z: zPos,
-                    duration:2, ease: "sine",
-                })
-    
             gsap.to(
                 cameraRef.rotation,
                 {
                     x: 0.5 * Math.PI, y: 1.3 * Math.PI, z: 0.5 * Math.PI,
-                    duration: 2, ease: "sine",
+                    duration: 2, ease: "power2.out",
                 })
         }
     })

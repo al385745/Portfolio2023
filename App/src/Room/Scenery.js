@@ -11,7 +11,6 @@ export default function Scenery(props) {
     const loadPlane = useRef()
 
     var animationDone = false
-    const insideRoom = Globals((state)=> state.insideRoom)
 
     useFrame((state)=>
     {

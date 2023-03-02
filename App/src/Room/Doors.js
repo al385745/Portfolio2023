@@ -27,16 +27,16 @@ export default function Doors(props) {
     var animationDone = false
 
     const pointsDoors = [
-        {   position: new THREE.Vector3(0, 0, 2),
+        {   position: new THREE.Vector3(4, 1, 10),
             element: document.querySelector('.point-0')
         },
-        {   position: new THREE.Vector3(0, 0, 4),
+        {   position: new THREE.Vector3(4, 1, 37),
             element: document.querySelector('.point-1')
         },
-        {   position: new THREE.Vector3(0, 0, 6),
+        {   position: new THREE.Vector3(4, 1, 64),
             element: document.querySelector('.point-2')
         },
-        {   position: new THREE.Vector3(0, 0, 8),
+        {   position: new THREE.Vector3(4, 1, 91),
             element: document.querySelector('.point-3')
         },]
     
@@ -66,32 +66,30 @@ export default function Doors(props) {
             screenPosition.project(state.camera)
     
             const translateX = screenPosition.x * window.innerWidth * 0.5
-            const translateY = screenPosition.y * window.innerHeight * 0.5
+            const translateY = -screenPosition.y * window.innerHeight * 0.5
             point.element.style.transform = `translateX(${translateX}px) translateY(${translateY}px)`
         }
 
         if(currentDoor != "none" && !insideRoom)
         {
-            gsap.to(
-                state.camera.position,
+            enterRoom(true)
+            document.querySelector('.point-Right').classList.remove('visible')
+            document.querySelector('.point-Rotate').classList.add('visible')
+            document.querySelector('.point-Exit').classList.add('visible')
+            document.querySelector('.point-Exit').style.top = `${90}%`
+
+            gsap.to(state.camera.position,
                 {
-                    duration: 3,
-                    x: -2,
-                    y: 2,
-                    z: camPosZ,
-                    ease: "sine",
-                }
-            )
+                    x: -2, y: 2, z: camPosZ,
+                    duration: 3, ease: "power2.out",
+                })
             
-            gsap.to(
-                state.camera.rotation,
+            gsap.to(state.camera.rotation,
                 {
-                    duration: 3,
                     y: 1.5 * Math.PI,
-                    ease: "sine",
+                    duration: 3, ease: "power2.out",
                     onComplete: ()=>{startRotation(true)}
-                }
-            )
+                })
             
             // Hide door
             // gsap.to(
@@ -102,12 +100,6 @@ export default function Doors(props) {
             //         ease: "sine",
             //     }
             // )
-
-            enterRoom(true)
-            document.querySelector('.point-Right').classList.remove('visible')
-            document.querySelector('.point-Rotate').classList.add('visible')
-            document.querySelector('.point-Exit').classList.add('visible')
-            document.querySelector('.point-Exit').style.top = `${90}%`
         }
         // else if(!animationDone && insideRoom && (exitRoomPressed || exitUIPressed))
         // {

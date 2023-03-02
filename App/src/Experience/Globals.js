@@ -6,7 +6,6 @@ export default create(subscribeWithSelector((set)=>
     return {
 
         // Attributes
-        // movementPlayer: "none",
         currentDoor: "none",
         insideRoom: false,
         enabledRoomRotation: false,
@@ -47,8 +46,5 @@ export default create(subscribeWithSelector((set)=>
         door2Clicked: () => { set(()=> { return {currentDoor: "door2" } }) },
         door3Clicked: () => { set(()=> { return {currentDoor: "door3" } }) },
         door4Clicked: () => { set(()=> { return {currentDoor: "door4" } }) },
-        // movePlayerLeft: () => { set(()=> { return {movementPlayer: "left" } }) },
-        // movePlayerRight: () => { set(()=> { return {movementPlayer: "right" } }) },
-        // stopPlayerMovement: () => { set(()=> { return {movementPlayer: "none" } }) },
     }
 }))
