@@ -11,17 +11,18 @@ export default function Player()
     const animations = useAnimations(model.animations, model.scene)
     animations.actions['Survey'].play()
     var movementPlayer = "none"
-
     const body = useRef()
+    const speed = 2
     
     // Attributes
     const insideRoom = Globals((state)=> state.insideRoom)
     // Methods
+    const lastXPos = Globals((state)=> state.lastXPos)
+    const lastYPos = Globals((state)=> state.lastYPos)
     const lastZPos = Globals((state)=> state.lastZPos)
     
     const forward = useKeyboardControls((state)=> state.forward)
     // const backward = useKeyboardControls((state)=> state.backward)
-    const speed = 2
 
     const pointRight = document.querySelector('.point-Right')
     pointRight.style.left = `${90}%`
@@ -37,8 +38,8 @@ export default function Player()
         if(!insideRoom)
         {
             movementPlayer = "none" 
-            animations.actions['Survey'].fadeOut(0.5)
             animations.actions['Walk'].fadeOut(0.5)
+            animations.actions['Survey'].reset().fadeIn(0.5).play()
         }
     })   
 
@@ -52,12 +53,15 @@ export default function Player()
                 animations.actions['Survey'].fadeOut(0.5)
                 animations.actions['Walk'].reset().fadeIn(0.5).play()
             }
+            else
+            {
+                animations.actions['Walk'].fadeOut(0.5)
+                animations.actions['Survey'].reset().fadeIn(0.5).play()
+            }
         }
 
         return() => 
         {
-            animations.actions['Survey'].fadeOut(0.5)
-            animations.actions['Walk'].fadeOut(0.5)
             endCharacterAnimation()
         }
     }, [forward])
@@ -91,13 +95,15 @@ export default function Player()
                 1.3 * Math.PI,
                 0.5 * Math.PI,
             )
+            lastXPos(cameraPosition.x)
+            lastYPos(cameraPosition.y)
             lastZPos(cameraPosition.z)
         }
     })
     
 
     return <> 
-        <primitive ref={body} object={model.scene} scale={0.02} position-y={-1}/>
+        <primitive castShadow receiveShadow ref={body} object={model.scene} scale={0.02}/>
     </>
 }
 useGLTF.preload('./Fox/glTF/Fox.gltf')

@@ -2,19 +2,19 @@ import { useFrame } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei'
 import { useRef } from 'react'
 import gsap from 'gsap';
-import Globals from '../Experience/Globals.js';
+import * as THREE from 'three'
 
 export default function Scenery(props) {
 
-    const {nodes, materials} = useGLTF("/PortfolioModel.glb");
-    nodes.Scenario.material.transparent=true
+    const {nodes, materials} = useGLTF("/Suelo.glb");
+    // nodes.Suelo.material.transparent=true
     const loadPlane = useRef()
-
     var animationDone = false
 
+
+    // Initial Fade Out
     useFrame((state)=>
     {
-        
         if(!animationDone && loadPlane != null)
         {
             loadPlane.current.material.transparent = true
@@ -24,27 +24,36 @@ export default function Scenery(props) {
                 {
                     duration: 2,
                     opacity: 0,
-                    ease: "linear",
-                    onComplete: ()=>{loadPlane.current.material.visible=false}
+                    ease: "power2.in",
+                    onComplete: ()=>{
+                        document.querySelector('.point-0').classList.add('visible')
+                        document.querySelector('.point-1').classList.add('visible')
+                        document.querySelector('.point-2').classList.add('visible')
+                        document.querySelector('.point-3').classList.add('visible')
+                        document.querySelector('.point-Right').classList.add('visible')
+                        loadPlane.current.material.visible=false
+                    }
                 }
             )
         }
     })
 
-    return (
-        <group>
+    return <>
+        <group {...props} dispose={null} scale={0.3} position={[5, 0, 5]}>
             <mesh
-                geometry={nodes.Scenario.geometry}
-                material={nodes.Scenario.material}
-                position={[8, 4, 10]}
-                scale={0.1}
+                receiveShadow
+                geometry={nodes.Suelo.geometry}
+                // material={materials.Material}
+                material={new THREE.MeshStandardMaterial({color: 0x8a6642})}
             />
-            <mesh ref={loadPlane} position={[-5, 5, 5]} rotation-x={Math.PI*0.5} rotation-z={Math.PI*0.5} rotation-y={-Math.PI/1.5}>
-                <planeBufferGeometry attach="geometry" args={[25, 15]} />
-                <meshBasicMaterial attach="material" color="black" />
-            </mesh>
         </group>
-    )
+
+        <color attach="background" args={['#d8f9ff']}/>
+        <mesh ref={loadPlane} position={[-3, 5, 5]} scale={2} rotation-x={Math.PI*0.5} rotation-z={Math.PI*0.5} rotation-y={-Math.PI/1.5}>
+            <planeBufferGeometry attach="geometry" args={[25, 15]} />
+            <meshBasicMaterial attach="material" color="black" />
+        </mesh>
+    </>
 }
 
 useGLTF.preload("/PortfolioModel.glb");

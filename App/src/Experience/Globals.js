@@ -37,7 +37,7 @@ export default create(subscribeWithSelector((set)=>
             })
         },
 
-        lastXPos: (value)=> { set(()=> { return {zPos: value }})},
+        lastXPos: (value)=> { set(()=> { return {xPos: value }})},
         lastYPos: (value)=> { set(()=> { return {yPos: value }})},
         lastZPos: (value)=> { set(()=> { return {zPos: value }})},
 

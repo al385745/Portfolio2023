@@ -23,8 +23,8 @@ root.render(
             dpr={ [1, 2] } // clamp pixel ratio (default)
             gl={ {
                 antialias:true, // default
-                toneMapping: THREE.ACESFilmicToneMapping, // default
-                outputEncoding: THREE.sRGBEncoding // (default)
+                // toneMapping: THREE.ACESFilmicToneMapping,
+                outputEncoding: THREE.sRGBEncoding // THREE.ColorManagement.legacyMode = false
                 } } 
             shadows
             >

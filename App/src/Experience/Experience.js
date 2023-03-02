@@ -15,7 +15,7 @@ const loadingBarElement = document.querySelector('.loading-bar')
 export default function Experience()
 {
     return <>
-        <color attach="background" args={['#000033']}/>
+        <color attach="background" args={['#000000']}/>
         <Camera/>
         <Lights/>
         <Suspense fallback={<Loader/>}/*fallback={ <Placeholder position-y={0.5} scale={ [2, 3, 2] }*/>  
@@ -45,12 +45,9 @@ function Loader() {
                 loadingBarElement.style.transform = ''  
             }, 500)
         }
-        if (progress){
-            console.log(loadingBarElement)
+        if (progress)
             loadingBarElement.style.transform = `scaleX(${progress})`
-        }
     }
-
 
     return <>
         <mesh position={[-5, 5, 5]} rotation-x={Math.PI*0.5} rotation-z={Math.PI*0.5} rotation-y={-Math.PI/1.5}>

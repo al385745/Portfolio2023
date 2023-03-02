@@ -26,7 +26,7 @@ export default function Interface()
             </div> */}
 
         </div>
-        <div className="point point-Right visible" >
+        <div className="point point-Right" >
             <div className="label">Right</div>
         </div>
         <div className="point point-Rotate" >
@@ -36,18 +36,19 @@ export default function Interface()
             <div className="label">Exit</div>
         </div>
 
-        <div className="point point-0 visible" onMouseDown={door1Clicked}>
-            <div className="label"></div>
-        </div>
-        <div className="point point-1 visible" onMouseDown={door2Clicked}>
-            <div className="label"></div>
-        </div>
-        <div className="point point-2 visible" onMouseDown={door3Clicked}>
-            <div className="label"></div>
-        </div>
-        <div className="point point-3 visible" onMouseDown={door4Clicked}>
-            <div className="label"></div>
-            {/* <div className="text">Buenas que tal</div> */}
+        <div className = "doorPoints">
+            <div className="point point-0" onMouseDown={door1Clicked}>
+                <div className="label"></div>
+            </div>
+            <div className="point point-1" onMouseDown={door2Clicked}>
+                <div className="label"></div>
+            </div>
+            <div className="point point-2" onMouseDown={door3Clicked}>
+                <div className="label"></div>
+            </div>
+            <div className="point point-3" onMouseDown={door4Clicked}>
+                <div className="label"></div>
+            </div>
         </div>
 
         
