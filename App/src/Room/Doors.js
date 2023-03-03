@@ -80,14 +80,14 @@ export default function Doors(props) {
             gsap.to(state.camera.position,
                 {
                     x: 8, y: 3, z: camPosZ,
-                    duration: 3, ease: "lineal",
+                    duration: 3, ease: "sine",
                 })
             
             gsap.to(state.camera.rotation,
                 {
                     y: 1.5 * Math.PI,
-                    duration: 3, ease: "lineal",
-                    onComplete: ()=>{nodes.Puertas.material.opacity = 0}
+                    duration: 3, ease: "sine",
+                    // onComplete: ()=>{nodes.Puertas.material.opacity = 0}
                 })
             
             // Hide door
@@ -101,7 +101,7 @@ export default function Doors(props) {
         else if(currentDoor == "none")
         {
             // Show doors again
-            nodes.Puertas.material.opacity = 100
+            // nodes.Puertas.material.opacity = 100
             // gsap.to(nodes.Puertas.material,
             //     {
             //         duration: 2,

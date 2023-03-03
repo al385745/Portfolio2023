@@ -59,7 +59,7 @@ export default function Camera()
     // },[camDebug]);
 
     return <>
-        <PerspectiveCamera position={[camDebug.x, camDebug.y, camDebug.z]}/>
+        <PerspectiveCamera />
         {/* <OrbitControls enableDamping={false} position={[camDebug.x, camDebug.y, camDebug.z]}/> */}
     </>
 }

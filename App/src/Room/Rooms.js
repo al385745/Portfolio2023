@@ -30,7 +30,7 @@ export default function Model(props) {
     // const backward = useKeyboardControls((state)=> state.forward)
     var roomToRotate = null
     var animationDone = false
-    var cameraRef = null
+    var exitStarted = false
 
     document.querySelector('.point-Rotate').addEventListener("click",(event)=>
     {
@@ -54,12 +54,10 @@ export default function Model(props) {
         document.querySelector('.point-Exit').classList.remove('visible')
         document.querySelector('.point-Rotate').classList.remove('visible')
         doorClicked("none")
-
     })
 
     useFrame((state)=>
     {
-        cameraRef = state.camera
 
         // Asign a room when enter to one
         switch(currentDoor)
@@ -77,9 +75,10 @@ export default function Model(props) {
         }
 
         // Exit animation
-        if(insideRoom && currentDoor == "none")
+        if(!exitStarted && insideRoom && currentDoor == "none")
         {
-            gsap.to(cameraRef.position, 
+            exitStarted = true
+            gsap.to(state.camera.position, 
                 {
                     // x: -5, y: 6.5, z: zPos,
                     x: xPos, y: yPos, z: zPos,
@@ -91,11 +90,12 @@ export default function Model(props) {
                         document.querySelector('.point-2').classList.add('visible')
                         document.querySelector('.point-3').classList.add('visible')
                         enterRoom(false)
+                        exitStarted = false
                     }
                 })
     
             gsap.to(
-                cameraRef.rotation,
+                state.camera.rotation,
                 {
                     x: 0.5 * Math.PI, y: 1.3 * Math.PI, z: 0.5 * Math.PI,
                     duration: 2, ease: "power2.out",
